@@ -11,6 +11,7 @@ import {
 import { useEventsStore } from '@/stores/events'
 import { useRouter } from 'vue-router'
 import { useLoadingStore } from '@/stores/loading'
+import StandardButton from '@/components/Shared/StandardButton.vue'
 
 // stores
 const eventsStore = useEventsStore()
@@ -119,9 +120,9 @@ async function submitForm() {
 </script>
 
 <template>
-  <div class="flex flex-1 flex-col justify-center p-6 my-auto">
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-0 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+  <div class="flex flex-1 flex-col justify-center my-auto">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         Select Event
       </h2>
       <form class="space-y-6 mt-10" @submit.prevent="submitForm">
@@ -368,12 +369,15 @@ async function submitForm() {
         </div>
 
         <div>
-          <button
-            type="submit"
-            class="flex w-full justify-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          <RouterLink
+            :to="{ name: 'registration', params: { registrationType: 'scan', eventId: '1' } }"
           >
-            Go
-          </button>
+            <StandardButton
+              type="submit"
+              text="Go"
+              class="bg-blue-600 text-white hover:bg-blue-500 w-full mt-6 justify-center"
+            />
+          </RouterLink>
         </div>
       </form>
     </div>

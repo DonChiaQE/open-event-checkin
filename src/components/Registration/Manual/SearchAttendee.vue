@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { XCircleIcon, PrinterIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { FunnelIcon } from '@heroicons/vue/24/outline'
 
+import StandardButton from '@/components/Shared/StandardButton.vue'
+
 // INITIALISE TEMPLATE REFS
 const searchBar = ref(null)
 
@@ -53,7 +55,7 @@ const items = [
       memberType: 'Organiser',
       organisation: 'SUSS AI-IG'
     }
-  },
+  }
 ]
 
 const filterOptions = [
@@ -118,7 +120,11 @@ const filterOptions = [
               'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-1.5 text-sm font-semibold text-gray-900 border border-gray-300 hover:bg-gray-50 group-focus:border-l-blue-600'
             ]"
           >
-            <FunnelIcon v-if="!filterOptions.some((obj) => obj.show.value)" class="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+            <FunnelIcon
+              v-if="!filterOptions.some((obj) => obj.show.value)"
+              class="-ml-0.5 h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
             <svg
               v-else
               xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +138,7 @@ const filterOptions = [
                 clip-rule="evenodd"
               />
             </svg>
-            Filter
+            <span class="hidden sm:block">Filter</span>
           </button>
         </div>
 
@@ -172,22 +178,22 @@ const filterOptions = [
       </div>
     </div>
 
-    <div v-if="items.length > 0" class="mt-5 h-96 overflow-scroll">
+    <div v-if="items.length > 0" class="mt-5 h-96 overflow-y-scroll">
       <ul role="list" class="flex flex-col gap-3">
         <li
           v-for="item in items"
           :key="item.id"
-          class="rounded-md bg-white px-6 py-4 shadow border border-gray-300 last:mb-1"
+          class="rounded-md bg-white px-3 sm:px-6 py-3 sm:py-4 shadow border border-gray-300 last:mb-1"
         >
-          <div class="flex items-center justify-between gap-8">
-            <div class="flex flex-col gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 items-center justify-between gap-2 sm:gap-8">
+            <div class="flex flex-col sm:gap-3">
               <div class="flex flex-col gap-1">
                 <span class="text-gray-900 font-bold">{{ item.name }}</span>
                 <span class="text-gray-400 font-bold text-sm">{{ item.email }}</span>
               </div>
               <div
                 v-if="filterOptions.some((obj) => obj.show.value)"
-                class="flex flex-wrap text-normal gap-1"
+                class="flex flex-wrap text-normal gap-1 mt-1 sm:mt-0"
               >
                 <span
                   v-if="filterOptions[0].show.value"
@@ -207,33 +213,30 @@ const filterOptions = [
               </div>
             </div>
 
-            <div class="flex items-center gap-2 flex-none">
-              <button
-                type="button"
+            <div class="flex items-center justify-end gap-2">
+              <StandardButton
                 @click="item.checkedIn.value = true"
+                :text="item.checkedIn.value ? 'Checked-in' : 'Check-in'"
                 :class="[
-                  'rounded-md px-2.5 py-2 text-sm font-medium shadow-sm transition',
                   item.checkedIn.value
-                    ? 'bg-blue-600/20 text-blue-700/70'
-                    : 'bg-blue-600 text-white hover:bg-blue-500'
+                    ? 'bg-blue-600/20 text-blue-700/70 w-1/2 sm:w-auto justify-center min-w-fit'
+                    : 'bg-blue-600 text-white hover:bg-blue-500 w-1/2 sm:w-auto justify-center'
                 ]"
-              >
-                <span v-if="!item.checkedIn.value" class="transition-all">Check In</span>
-                <span v-else class="transition-all">Checked-in</span>
-              </button>
-              <button
-                type="button"
-                class="inline-flex items-center rounded-md bg-yellow-300 px-2.5 py-2 text-sm font-medium text-gray-900 hover:bg-yellow-200"
-              >
-                <PrinterIcon class="w-5 mr-1" />
-                <span>Print</span>
-              </button>
+              />
+              <StandardButton
+                text="Print"
+                :icon="PrinterIcon"
+                class="bg-yellow-300 text-gray-900 hover:bg-yellow-200 w-1/2 sm:w-auto justify-center"
+              />
             </div>
           </div>
         </li>
       </ul>
     </div>
-    <div v-else class="mt-5 h-96 rounded-lg bg-gray-50 border border-gray-300 flex items-center justify-center">
+    <div
+      v-else
+      class="mt-5 h-96 rounded-lg bg-gray-50 border border-gray-300 flex items-center justify-center"
+    >
       <div class="flex flex-col items-center gap-4">
         <MagnifyingGlassIcon class="h-12 text-gray-300" />
         <span class="text-2xl font-bold text-gray-300">No Search Results</span>
